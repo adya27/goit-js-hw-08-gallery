@@ -28,6 +28,10 @@
   height: 100vh;
 }
 .close-button {
+  background-image: url("../images/close_icon.svg");
+  background-repeat: no-repeat;
+  background-size: 30px;
+  background-position: 50% 50%;
   display: block;
   position: fixed;
   top: 30px;
@@ -36,14 +40,51 @@
   border-radius: 50%;
   width: 40px;
   height: 40px;
+  transition: background-color 0.2s cubic-bezier(0.86, 0, 0.07, 1);
 }
-.close {
-  display: none;
+.left-button:hover,
+.left-button:focus,
+.right-button:hover,
+.right-button:focus,
+.close-button:hover,
+.close-button:focus {
+  background-color: white;
 }
+
 .gallery__modal__image {
   width: 100vw;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.left-button,
+.right-button {
+  background-repeat: no-repeat;
+  background-size: 30px;
+  background-position: 50% 50%;
+  display: block;
+  position: fixed;
+  top: 50vh;
+
+  background-color: grey;
+  border-radius: 5%;
+  width: 20px;
+  height: 100px;
+  transition: background-color 0.2s cubic-bezier(0.86, 0, 0.07, 1);
+}
+
+.right-button {
+  background-image: url("../images/to-right.svg");
+
+  right: 5vw;
+}
+.left-button {
+  background-image: url("../images/to-left.svg");
+
+  left: 5vw;
+}
+
+.close {
+  display: none;
 }
