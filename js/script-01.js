@@ -6,10 +6,18 @@ const closeBtnlItem = document.querySelector(".close-button");
 const rightBtnlItem = document.querySelector(".right-button");
 const leftBtnlItem = document.querySelector(".left-button");
 const galleryLinkItem = document.querySelector(".gallery__item");
+const bodyItem = document.querySelector("body");
+
 let galleryModalImage;
 const galleryOriginalImagesArray = [];
 let currentImage;
 let currentImageIndex;
+
+appendGalleryMarkup(gallery);
+gallaryList.addEventListener("click", onClickGalleryLinkItem);
+gallery.forEach((image) => {
+  galleryOriginalImagesArray.push(image.original);
+});
 
 function createPictureMarkup({ description, original, preview }) {
   return `<li class="gallery__item">
@@ -28,6 +36,8 @@ function createPictureMarkup({ description, original, preview }) {
 }
 
 function createPictureMarkupInModal(description, original) {
+  bodyItem.classList.add("modal-open");
+
   return modalItem.insertAdjacentHTML(
     "afterbegin",
     `<div class="gallery__modal__image">
@@ -52,19 +62,16 @@ function appendGalleryMarkup(gallery) {
   );
 }
 
-appendGalleryMarkup(gallery);
-
 function onClickCloseBtnItem() {
   closeBtnlItem.classList.toggle("close");
   rightBtnlItem.classList.toggle("close");
   leftBtnlItem.classList.toggle("close");
   modalItem.classList.toggle("close");
+  bodyItem.classList.remove("modal-open");
 
   modalItem.textContent = "";
   //   console.log("onClickCloseBtnItem -> modalItem", modalItem);
 }
-
-gallaryList.addEventListener("click", onClickGalleryLinkItem);
 
 function onClickGalleryLinkItem(e) {
   e.preventDefault();
@@ -131,10 +138,6 @@ function onRightBtnClick() {
         </div>`
   );
 }
-
-gallery.forEach((image) => {
-  galleryOriginalImagesArray.push(image.original);
-});
 
 function onLeftBtnlClick() {
   modalItem.textContent = "";
