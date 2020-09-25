@@ -42,7 +42,7 @@ function createPictureMarkupInModal(description, original) {
     "afterbegin",
     `<div class="gallery__modal__image">
         <img
-            class="gallery__image"
+            class="lightbox__image"
             src="${original}"
             data-source="${description}"
             alt="${description}"
@@ -131,7 +131,7 @@ function onRightBtnClick() {
     "afterbegin",
     `<div class="gallery__modal__image">
         <img
-            class="gallery__image"
+            class="lightbox__image"
             src="${galleryOriginalImagesArray[currentImageIndex]}"
            
         />
@@ -153,7 +153,7 @@ function onLeftBtnlClick() {
     "afterbegin",
     `<div class="gallery__modal__image">
         <img
-            class="gallery__image"
+            class="lightbox__image"
             src="${galleryOriginalImagesArray[currentImageIndex]}"
            
         />
