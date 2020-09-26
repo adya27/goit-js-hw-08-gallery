@@ -2,13 +2,14 @@ import gallery from "./data/gallery-items.js";
 
 const gallaryList = document.querySelector('[data-attr="gallery"]');
 const modalItem = document.querySelector(".modal");
+
 const closeBtnlItem = document.querySelector(".close-button");
 const rightBtnlItem = document.querySelector(".right-button");
 const leftBtnlItem = document.querySelector(".left-button");
+
 const galleryLinkItem = document.querySelector(".gallery__item");
 const bodyItem = document.querySelector("body");
 
-let galleryModalImage;
 const galleryOriginalImagesArray = [];
 let currentImage;
 let currentImageIndex;
@@ -89,7 +90,6 @@ function onClickGalleryLinkItem(e) {
   let description = e.target.getAttribute("alt");
   createPictureMarkupInModal(description, original);
 
-  galleryModalImage = document.querySelector(".gallery__modal__image");
   //   console.log(galleryModalImage);
 
   closeBtnlItem.classList.toggle("close");
@@ -97,17 +97,22 @@ function onClickGalleryLinkItem(e) {
   rightBtnlItem.classList.toggle("close");
   leftBtnlItem.classList.toggle("close");
 
-  document.addEventListener("keydown", onEscKeyDown);
+  document.addEventListener("keydown", onKeyDown);
   modalItem.addEventListener("click", onBackdropClick);
   rightBtnlItem.addEventListener("click", onRightBtnClick);
   leftBtnlItem.addEventListener("click", onLeftBtnlClick);
   closeBtnlItem.addEventListener("click", onClickCloseBtnItem);
 }
 
-function onEscKeyDown(e) {
+function onKeyDown(e) {
+  //   console.log("onEscKeyDown -> e.key", e.key);
   if (e.key === "Escape") {
     onClickCloseBtnItem();
     document.removeEventListener("keydown", onEscKeyDown);
+  } else if (e.key === "ArrowRight") {
+    onRightBtnClick();
+  } else if (e.key === "ArrowLeft") {
+    onLeftBtnlClick();
   }
 }
 function onBackdropClick(e) {
@@ -119,7 +124,6 @@ function onBackdropClick(e) {
 
 function onRightBtnClick() {
   modalItem.textContent = "";
-  //   currentImageIndex += 1;
 
   if (currentImageIndex < galleryOriginalImagesArray.length - 1) {
     currentImageIndex += 1;
@@ -141,7 +145,6 @@ function onRightBtnClick() {
 
 function onLeftBtnlClick() {
   modalItem.textContent = "";
-  //   currentImageIndex += 1;
 
   if (currentImageIndex > 0) {
     currentImageIndex -= 1;
