@@ -1,13 +1,11 @@
 import gallery from "./data/gallery-items.js";
 
-const gallaryList = document.querySelector('[data-attr="gallery"]');
-const modalItem = document.querySelector(".modal");
-
-const closeBtnlItem = document.querySelector(".close-button");
-const rightBtnlItem = document.querySelector(".right-button");
-const leftBtnlItem = document.querySelector(".left-button");
-
-const galleryLinkItem = document.querySelector(".gallery__item");
+const gallaryList = document.querySelector(".js-gallery");
+const modalItem = document.querySelector(".lightbox__overlay");
+const lightboxItem = document.querySelector(".js-lightbox");
+const closeBtnlItem = document.querySelector(".lightbox__button");
+const rightBtnlItem = document.querySelector('[data-action = "right-button"]');
+const leftBtnlItem = document.querySelector('[data-action = "left-button"]');
 const bodyItem = document.querySelector("body");
 
 const galleryOriginalImagesArray = [];
@@ -37,11 +35,12 @@ function createPictureMarkup({ description, original, preview }) {
 }
 
 function createPictureMarkupInModal(description, original) {
-  bodyItem.classList.add("modal-open");
+  lightboxItem.classList.add("is-open");
+  bodyItem.classList.add("modal-is-open");
 
   return modalItem.insertAdjacentHTML(
     "afterbegin",
-    `<div class="gallery__modal__image">
+    `<div class="lightbox__content">
         <img
             class="lightbox__image"
             src="${original}"
@@ -64,24 +63,17 @@ function appendGalleryMarkup(gallery) {
 }
 
 function onClickCloseBtnItem() {
-  closeBtnlItem.classList.toggle("close");
-  rightBtnlItem.classList.toggle("close");
-  leftBtnlItem.classList.toggle("close");
-  modalItem.classList.toggle("close");
-  bodyItem.classList.remove("modal-open");
+  lightboxItem.classList.remove("is-open");
 
   modalItem.textContent = "";
-  //   console.log("onClickCloseBtnItem -> modalItem", modalItem);
 }
 
 function onClickGalleryLinkItem(e) {
   e.preventDefault();
 
   currentImage = e.target.dataset.source;
-  //   console.log("appendGalleryMarkup -> currentImage", currentImage);
 
   currentImageIndex = galleryOriginalImagesArray.indexOf(currentImage);
-  //   console.log("onClickGalleryLinkItem -> currentImageIndex", currentImageIndex);
 
   if (e.target.nodeName !== "IMG") {
     return;
@@ -90,22 +82,14 @@ function onClickGalleryLinkItem(e) {
   let description = e.target.getAttribute("alt");
   createPictureMarkupInModal(description, original);
 
-  //   console.log(galleryModalImage);
-
-  closeBtnlItem.classList.toggle("close");
-  modalItem.classList.toggle("close");
-  rightBtnlItem.classList.toggle("close");
-  leftBtnlItem.classList.toggle("close");
-
   document.addEventListener("keydown", onKeyDown);
-  modalItem.addEventListener("click", onBackdropClick);
+  lightboxItem.addEventListener("click", onBackdropClick);
   rightBtnlItem.addEventListener("click", onRightBtnClick);
   leftBtnlItem.addEventListener("click", onLeftBtnlClick);
   closeBtnlItem.addEventListener("click", onClickCloseBtnItem);
 }
 
 function onKeyDown(e) {
-  //   console.log("onEscKeyDown -> e.key", e.key);
   if (e.key === "Escape") {
     onClickCloseBtnItem();
     document.removeEventListener("keydown", onEscKeyDown);
@@ -116,7 +100,7 @@ function onKeyDown(e) {
   }
 }
 function onBackdropClick(e) {
-  if (e.target.nodeName !== "IMG") {
+  if (e.target.nodeName !== "IMG" && e.target.nodeName !== "BUTTON") {
     onClickCloseBtnItem();
     modalItem.removeEventListener("click", onBackdropClick);
   }
@@ -131,16 +115,7 @@ function onRightBtnClick() {
     currentImageIndex += 1 - galleryOriginalImagesArray.length;
   }
 
-  return modalItem.insertAdjacentHTML(
-    "afterbegin",
-    `<div class="gallery__modal__image">
-        <img
-            class="lightbox__image"
-            src="${galleryOriginalImagesArray[currentImageIndex]}"
-           
-        />
-        </div>`
-  );
+  return createNextModalImg();
 }
 
 function onLeftBtnlClick() {
@@ -152,9 +127,13 @@ function onLeftBtnlClick() {
     currentImageIndex += galleryOriginalImagesArray.length - 1;
   }
 
+  return createNextModalImg();
+}
+
+function createNextModalImg() {
   return modalItem.insertAdjacentHTML(
     "afterbegin",
-    `<div class="gallery__modal__image">
+    `<div class="lightbox__content">
         <img
             class="lightbox__image"
             src="${galleryOriginalImagesArray[currentImageIndex]}"
